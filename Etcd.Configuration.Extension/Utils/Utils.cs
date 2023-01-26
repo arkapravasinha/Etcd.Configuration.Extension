@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Etcd.Configuration.Extension.Models;
 
 namespace Etcd.Configuration.Extension.Utils
@@ -17,7 +18,7 @@ namespace Etcd.Configuration.Extension.Utils
             try
             {
                 List<Key> listKey = new List<Key>();
-                if (!string.IsNullOrEmpty(keys) && keys.Contains(":") && keys.Contains(","))
+                if (!string.IsNullOrEmpty(keys) && keys.Contains(":"))
                 {
                     string[] comaSeparatedKeys = keys.Split(",");
                     foreach (var singleKey in comaSeparatedKeys)
