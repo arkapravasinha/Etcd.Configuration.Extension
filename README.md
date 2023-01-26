@@ -12,3 +12,5 @@ An Extension Library to Configure IConfiguration with ETCD Key-Value Pair
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=arkapravasinha_Etcd.Configuration.Extension&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=arkapravasinha_Etcd.Configuration.Extension)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=arkapravasinha_Etcd.Configuration.Extension&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=arkapravasinha_Etcd.Configuration.Extension)
 [![Build Status](https://dev.azure.com/arkaprava123040/Pipelines/_apis/build/status/ETCD.Configuration.Extension%20BUILD%20CI?branchName=master&jobName=Agent%20job%201)](https://dev.azure.com/arkaprava123040/Pipelines/_build/latest?definitionId=12&branchName=master)
+
+# How to use
