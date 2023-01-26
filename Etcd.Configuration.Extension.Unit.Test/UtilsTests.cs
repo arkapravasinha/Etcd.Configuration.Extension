@@ -1,5 +1,6 @@
 using Etcd.Configuration.Extension.Models;
 using Etcd.Configuration.Extension.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Etcd.Configuration.Extension.Unit.Test
 {
@@ -49,6 +50,20 @@ namespace Etcd.Configuration.Extension.Unit.Test
             Assert.IsTrue(list[0].KeyName.Equals(result));
             Assert.IsTrue(list[0].ValueType==(ValueTypes)valueTypes);
 
+        }
+
+        [TestMethod]
+        public void Check_Unwanted_Model()
+        {
+            //Arrange
+            Keys keys= new Keys();
+            string data = "key1:json";
+
+            //Act
+            keys.AllKeys=data.GenerateKeys().ToList();
+            //Assert
+            Assert.IsNotNull(keys);
+            Assert.IsTrue(keys.AllKeys.Count==1);
         }
        
     }
