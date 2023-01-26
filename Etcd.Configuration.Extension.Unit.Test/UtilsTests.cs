@@ -12,6 +12,8 @@ namespace Etcd.Configuration.Extension.Unit.Test
         [DataRow("SYZ")]
         [DataRow("SYZ,XYZ")]
         [DataRow("SYZ:TEST")]
+        [DataRow(":")]
+        [DataRow(":json")]
         public void Utils_Generate_Keys_Wrong_Condition(string data)
         {
             //Act
@@ -48,16 +50,6 @@ namespace Etcd.Configuration.Extension.Unit.Test
             Assert.IsTrue(list[0].ValueType==(ValueTypes)valueTypes);
 
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Utils_Generate_Keys_Exception_Check()
-        {
-            //arrange
-            string data = ":";
-            //Act
-            var list = data.GenerateKeys();
-
-        }
+       
     }
 }

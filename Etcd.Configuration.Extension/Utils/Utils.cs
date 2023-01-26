@@ -23,7 +23,7 @@ namespace Etcd.Configuration.Extension.Utils
                     string[] comaSeparatedKeys = keys.Split(",");
                     foreach (var singleKey in comaSeparatedKeys)
                     {
-                        string[] keyandType = singleKey.Trim().Split(":");
+                        string[] keyandType = singleKey.Trim().Split(":").Where(x=>!string.IsNullOrEmpty(x)).ToArray();
                         if (keyandType.Length > 1 && Enum.TryParse<ValueTypes>(keyandType[1], true, out ValueTypes valueType))
                         {
                             listKey.Add(new Key() { KeyName = keyandType[0], ValueType = valueType });
