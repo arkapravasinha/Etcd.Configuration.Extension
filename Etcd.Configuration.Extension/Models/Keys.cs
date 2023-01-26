@@ -6,7 +6,7 @@ namespace Etcd.Configuration.Extension.Models
 {
     internal class Keys
     {
-        List<Key> AllKeys { get; set; } = new List<Key>();
+        public List<Key> AllKeys { get; set; } = new List<Key>();
     }
 
     internal class Key
