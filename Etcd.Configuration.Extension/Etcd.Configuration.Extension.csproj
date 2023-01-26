@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <ImplicitUsings>disbale</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
   <ItemGroup>
