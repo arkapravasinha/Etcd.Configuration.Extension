@@ -37,7 +37,7 @@ namespace Etcd.Configuration.Extension.ConfigurationSource
 
         public string Keys { get; set; } = string.Empty;
 
-        public bool ReloadOnChenge { get; set; } = false;
+        public bool ReloadOnChange { get; set; } = false;
 
         public Action<EtcdConfigOnLoadException>? OnLoadFailure { get; set; } = null;
 

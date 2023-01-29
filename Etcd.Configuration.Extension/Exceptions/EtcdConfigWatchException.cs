@@ -7,11 +7,6 @@ namespace Etcd.Configuration.Extension.Exceptions
     /// </summary>
     public class EtcdConfigWatchException:Exception
     {
-        public EtcdConfigWatchException(string message) : base(message)
-        {
-
-        }
-
         public EtcdConfigWatchException(string message, Exception innerException) : base(message, innerException)
         {
 

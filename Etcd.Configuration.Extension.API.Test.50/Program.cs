@@ -24,7 +24,7 @@ namespace Etcd.Configuration.Extension.API.Test._50
                 options.Hosts = "http://host.docker.internal";
                 options.Port = 8098;
                 options.Keys = "testapplication/test:string,testapplication/testjson:json";
-                options.ReloadOnChenge = true;
+                options.ReloadOnChange = true;
                 options.OnClientCreationFailure = (x) =>
                 {
                     Console.WriteLine(x.Message);

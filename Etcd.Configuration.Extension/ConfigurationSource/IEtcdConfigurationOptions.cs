@@ -78,7 +78,7 @@ namespace Etcd.Configuration.Extension.ConfigurationSource
         /// <summary>
         /// If Reload is Required, this will change the configuration
         /// </summary>
-        bool ReloadOnChenge { get; set; }
+        bool ReloadOnChange { get; set; }
 
         /// <summary>
         /// ETCD Client Server Name
