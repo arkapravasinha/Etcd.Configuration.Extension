@@ -1,16 +1,8 @@
-﻿using dotnet_etcd;
-using Etcd.Configuration.Extension.Client;
-using JsonParser = Etcd.Configuration.Extension.Parser.JsonParser;
-using Etcd.Configuration.Extension.Utils;
-using Etcdserverpb;
-using Google.Protobuf;
+﻿using Etcd.Configuration.Extension.Utils;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +10,7 @@ using Etcd.Configuration.Extension.Exceptions;
 using Etcd.Configuration.Extension.ConfigurationSource;
 using Etcd.Configuration.Extension.Models;
 using System.IO;
+using dotnet_etcd.interfaces;
 
 namespace Etcd.Configuration.Extension.ConfigurationBuilder
 {
@@ -29,11 +22,11 @@ namespace Etcd.Configuration.Extension.ConfigurationBuilder
         //Private Variables
         private readonly EtcdConfigurationSource _etcdConfigurationSource;
         private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly EtcdClient _etcdClient;
+        private readonly IEtcdClient _etcdClient;
         private Task? _watcher;
 
         //Constructor
-        public EtcdConfigurationProvider( EtcdConfigurationSource etcdConfigurationSource, EtcdClient etcdClient)
+        public EtcdConfigurationProvider( EtcdConfigurationSource etcdConfigurationSource, IEtcdClient etcdClient)
         {
             _etcdConfigurationSource = etcdConfigurationSource;
             _cancellationTokenSource = new CancellationTokenSource();
@@ -50,7 +43,7 @@ namespace Etcd.Configuration.Extension.ConfigurationBuilder
             DoLoad(false).GetAwaiter().GetResult();
 
             // Polling starts after the initial load to ensure no concurrent access to the key from this instance
-            if (_etcdConfigurationSource.ReloadOnChenge)
+            if (_etcdConfigurationSource.ReloadOnChange)
             {
                 _watcher = Task.Run(() => Watcher(cancellationToken), cancellationToken);
             }

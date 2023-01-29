@@ -13,10 +13,10 @@ namespace Etcd.Configuration.Extension.Client
     internal sealed class EtcdGrpcClientFactory: IEtcdGrpcClientFactory
     {
         //Private Variables
-        private readonly EtcdConfigurationSource _etcdConfigurationSource;
+        private readonly IEtcdConfigurationOptions _etcdConfigurationSource;
 
         //Constructor
-        public EtcdGrpcClientFactory(EtcdConfigurationSource etcdConfigurationSource)
+        public EtcdGrpcClientFactory(IEtcdConfigurationOptions etcdConfigurationSource)
         {
             _etcdConfigurationSource = etcdConfigurationSource;
         }

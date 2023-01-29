@@ -7,11 +7,6 @@ namespace Etcd.Configuration.Extension.Exceptions
     /// </summary>
     public class EtcdConfigOnLoadException:Exception
     {
-        public EtcdConfigOnLoadException(string message) : base(message)
-        {
-
-        }
-
         public EtcdConfigOnLoadException(string message, Exception innerException) : base(message, innerException)
         {
 

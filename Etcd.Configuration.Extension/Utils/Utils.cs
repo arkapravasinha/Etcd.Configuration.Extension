@@ -15,27 +15,20 @@ namespace Etcd.Configuration.Extension.Utils
         /// <exception cref="ArgumentException"></exception>
         public static List<Key> GenerateKeys(this string keys)
         {
-            try
+            List<Key> listKey = new List<Key>();
+            if (!string.IsNullOrEmpty(keys) && keys.Contains(":"))
             {
-                List<Key> listKey = new List<Key>();
-                if (!string.IsNullOrEmpty(keys) && keys.Contains(":"))
+                string[] comaSeparatedKeys = keys.Split(",");
+                foreach (var singleKey in comaSeparatedKeys)
                 {
-                    string[] comaSeparatedKeys = keys.Split(",");
-                    foreach (var singleKey in comaSeparatedKeys)
+                    string[] keyandType = singleKey.Trim().Split(":").Where(x=>!string.IsNullOrEmpty(x)).ToArray();
+                    if (keyandType.Length > 1 && Enum.TryParse<ValueTypes>(keyandType[1], true, out ValueTypes valueType))
                     {
-                        string[] keyandType = singleKey.Trim().Split(":").Where(x=>!string.IsNullOrEmpty(x)).ToArray();
-                        if (keyandType.Length > 1 && Enum.TryParse<ValueTypes>(keyandType[1], true, out ValueTypes valueType))
-                        {
-                            listKey.Add(new Key() { KeyName = keyandType[0], ValueType = valueType });
-                        }
+                        listKey.Add(new Key() { KeyName = keyandType[0], ValueType = valueType });
                     }
                 }
-                return listKey;
             }
-            catch
-            {
-                throw new ArgumentException("Keys are not proper should be like 'key1:string,key2:json' ");
-            }
+            return listKey;
         }
     }
 }

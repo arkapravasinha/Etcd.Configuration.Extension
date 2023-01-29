@@ -7,11 +7,6 @@ namespace Etcd.Configuration.Extension.Exceptions
     /// </summary>
     public class EtcdGrpcClientException : Exception
     {
-        public EtcdGrpcClientException(string message) : base(message)
-        {
-
-        }
-
         public EtcdGrpcClientException(string message, Exception innerException) : base(message, innerException)
         {
 
