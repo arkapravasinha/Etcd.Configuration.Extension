@@ -1,7 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+	<TargetFrameworks Condition="'$(LibraryFrameworks)'==''">
+		net5.0;net6.0;net7.0
+	</TargetFrameworks>
+	<TargetFrameworks Condition="'$(LibraryFrameworks)'!=''">$(LibraryFrameworks)</TargetFrameworks>
+	<RootNamespace>Etcd.Configuration.Extension</RootNamespace>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <ImplicitUsings>disbale</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
@@ -17,6 +24,10 @@
 	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
 	  <_Parameter1>Etcd.Configuration.Extension.Unit.Test</_Parameter1>
 	</AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Include="LICENSE.md" Pack="true" PackagePath="LICENSE.md"/>
   </ItemGroup>
 
 </Project>
