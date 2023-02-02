@@ -1,5 +1,5 @@
 ### Change Description:
-Please provide a detailed description of the change
+Please provide a detailed description of the change.
 
 ### Checklist:
 - [ ]  Code Coverage
