@@ -23,6 +23,257 @@ Install-Package Etcd.Configuration.Extension
 ```
 dotnet add package Etcd.Configuration.Extension
 ```
+## Usage
+You can configure ETCD Configuration as below, if you want you can also confugure SSL settings and create a custom Handler
+
+### For Example .Net 7 Minimal API
+Program.cs
+```
+using Etcd.Configuration.Extension.Extensions;
+using Microsoft.Extensions.Configuration;
+
+namespace Etcd.Configuration.Extension.API.Test._70
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            builder.Configuration.AddEtcdConfiguration(options =>
+            {
+                options.Hosts = "http://host.docker.internal";
+                options.Port = 8098;
+                options.Keys = "testapplication/test:string,testapplication/testjson:json";
+                options.ReloadOnChange = true;
+                options.OnClientCreationFailure = (x) =>
+                {
+                    Console.WriteLine(x.Message);
+                };
+                options.OnLoadFailure = (x) => { Console.WriteLine(x.Message); };
+                options.OnWatchFailure = (x) => { Console.WriteLine(x.Message); };
+                //options.UserName = "test";
+                //options.Password= "test";
+                options.UseFullPathForKeys = true;
+            });
+            // Add services to the container.
+            builder.Services.AddAuthorization();
+
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseAuthorization();
+
+            app.MapGet("/allKey", (HttpContext httpContext) =>
+            {
+                return builder.Configuration.AsEnumerable();
+            })
+            .WithName("allKey");
+
+            app.MapGet("/fullKey", (HttpContext httpContext) =>
+            {
+                return builder.Configuration.GetSection("testapplication/test").AsEnumerable()
+                .Concat(builder.Configuration.GetSection("testapplication/testjson").AsEnumerable());
+            })
+            .WithName("fullKey");
+
+            app.Run();
+        }
+    }
+}
+```
+
+### For .Net 6 Non-Minimal API
+Program.cs
+```
+using Etcd.Configuration.Extension.Extensions;
+
+namespace Etcd.Configuration.Extension.API.Test._60
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            builder.Configuration.AddEtcdConfiguration(options =>
+            {
+                options.Hosts = "http://host.docker.internal";
+                options.Port = 8098;
+                options.Keys = "testapplication/test:string,testapplication/testjson:json";
+                options.ReloadOnChange = true;
+                options.OnClientCreationFailure = (x) =>
+                {
+                    Console.WriteLine(x.Message);
+                };
+                options.OnLoadFailure = (x) => { Console.WriteLine(x.Message); };
+                options.OnWatchFailure = (x) => { Console.WriteLine(x.Message); };
+                //options.UserName = "test";
+                //options.Password= "test";
+                options.UseFullPathForKeys = true;
+            });
+
+            // Add services to the container.
+
+            builder.Services.AddControllers();
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseAuthorization();
+
+
+            app.MapControllers();
+
+            app.Run();
+        }
+    }
+}
+```
+Fetch the settings using below mechanism,
+Controller
+```
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+
+namespace Etcd.Configuration.Extension.API.Test._60.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class KeysController : ControllerBase
+    {
+
+        private readonly ILogger<KeysController> _logger;
+        private readonly IConfiguration configuration;
+
+        public KeysController(ILogger<KeysController> logger, IConfiguration configuration)
+        {
+            _logger = logger;
+            this.configuration = configuration;
+        }
+
+        [HttpGet("/fullKey")]
+        public IActionResult Get()
+        {
+            return Ok(configuration.GetSection("testapplication/test").AsEnumerable()
+                .Concat(configuration.GetSection("testapplication/testjson").AsEnumerable()));
+        }
+
+        [HttpGet("/allKey")]
+        public IActionResult GetOnly()
+        {
+            return Ok(configuration.AsEnumerable());
+        }
+    }
+}
+```
+### For .Net 5 API
+Program.cs
+```
+using Etcd.Configuration.Extension.Extensions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Etcd.Configuration.Extension.API.Test._50
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+            .AddEtcdConfiguration(options =>
+            {
+                options.Hosts = "http://host.docker.internal";
+                options.Port = 8098;
+                options.Keys = "testapplication/test:string,testapplication/testjson:json";
+                options.ReloadOnChange = true;
+                options.OnClientCreationFailure = (x) =>
+                {
+                    Console.WriteLine(x.Message);
+                };
+                options.OnLoadFailure = (x) => { Console.WriteLine(x.Message); };
+                options.OnWatchFailure = (x) => { Console.WriteLine(x.Message); };
+                //options.UserName = "test";
+                //options.Password= "test";
+                options.UseFullPathForKeys = true;
+            })
+            .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
+}
+
+```
+Controllers
+```
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Etcd.Configuration.Extension.API.Test._50.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class KeysController : ControllerBase
+    {
+
+        private readonly ILogger<KeysController> _logger;
+        private readonly IConfiguration configuration;
+
+        public KeysController(ILogger<KeysController> logger, IConfiguration configuration)
+        {
+            _logger = logger;
+            this.configuration = configuration;
+        }
+
+        [HttpGet("/fullKey")]
+        public IActionResult Get()
+        {
+            return Ok(configuration.GetSection("testapplication/test").AsEnumerable()
+                .Concat(configuration.GetSection("testapplication/testjson").AsEnumerable()));
+        }
+
+        [HttpGet("/allKey")]
+        public IActionResult GetOnly()
+        {
+            return Ok(configuration.AsEnumerable());
+        }
+    }
+}
+
+```
 
 # Benifits
 Use this library to manage Application Configuration easily without worrying about restarting the application to refresh the configuration.
