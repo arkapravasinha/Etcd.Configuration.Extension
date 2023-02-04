@@ -11,6 +11,8 @@
 	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <ImplicitUsings>disbale</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<RepositoryUrl>https://github.com/arkapravasinha/Etcd.Configuration.Extension</RepositoryUrl>
+	<PackageProjectUrl>https://github.com/arkapravasinha/Etcd.Configuration.Extension</PackageProjectUrl>
 	<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
