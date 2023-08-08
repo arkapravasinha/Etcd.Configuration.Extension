@@ -23,7 +23,7 @@ namespace Etcd.Configuration.Extension.ConfigurationBuilder
         private readonly EtcdConfigurationSource _etcdConfigurationSource;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly IEtcdClient _etcdClient;
-        private readonly Grpc.Core.Metadata _headers;
+        private readonly Grpc.Core.Metadata? _headers;
         private Task? _watcher;
 
         //Constructor
@@ -32,7 +32,6 @@ namespace Etcd.Configuration.Extension.ConfigurationBuilder
             _etcdConfigurationSource = etcdConfigurationSource;
             _cancellationTokenSource = new CancellationTokenSource();
             _etcdClient = etcdClient;
-            _headers = new Grpc.Core.Metadata();
             if (!string.IsNullOrEmpty(_etcdConfigurationSource.UserName) && !string.IsNullOrEmpty(_etcdConfigurationSource.Password))
             {
                 var authRes = etcdClient.Authenticate(new Etcdserverpb.AuthenticateRequest()
@@ -40,7 +39,9 @@ namespace Etcd.Configuration.Extension.ConfigurationBuilder
                     Name = _etcdConfigurationSource.UserName,
                     Password = _etcdConfigurationSource.Password
                 });
-                _headers.Add("Authorization", authRes.Token);
+                _headers = new Grpc.Core.Metadata() {
+                    new Grpc.Core.Metadata.Entry("Authorization", authRes.Token)
+                };
             }
         }
 
