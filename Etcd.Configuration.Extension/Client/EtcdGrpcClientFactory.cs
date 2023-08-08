@@ -44,14 +44,6 @@ namespace Etcd.Configuration.Extension.Client
                                                  MaxTokens = _etcdConfigurationSource.MaxTokens,
                                                  TokenRatio = _etcdConfigurationSource.TokenRatio
                                              });
-                if(!string.IsNullOrEmpty(_etcdConfigurationSource.UserName) && !string.IsNullOrEmpty(_etcdConfigurationSource.Password))
-                {
-                    client.Authenticate(new Etcdserverpb.AuthenticateRequest()
-                    {
-                        Name = _etcdConfigurationSource.UserName,
-                        Password = _etcdConfigurationSource.Password
-                    });
-                }
                 return client;
             }
             catch(Exception ex)
